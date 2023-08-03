@@ -1,0 +1,82 @@
+---
+title: 'Hope and Optimism: Essential and Migrant Workers'
+author: "Monique Estrada"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(ggstatsplot)
+library(ggplot2)
+
+```
+
+
+
+```{r load}
+rawData<-read.csv("Estrada ARC Coding.csv")
+
+data<-rawData
+```
+
+
+
+
+
+
+
+
+```{r restructure}
+
+data <- subset(data, select = -c(17:30))
+
+
+data$Edu<- factor (data$Education,labels = c("Primary","High School",
+                                             "Some College","Currently Enrolled", 
+                                             "Associates", "Undergraduate"))
+
+
+data$Hopeall<-factor(data$HOPE, labels = c ( "Either Cognitive or Affective",
+                                            "Both"))
+
+
+data$Optimismall<-factor(data$Optimism, labels = c ("Personal Growth", 
+                                                    "Either Gratitude and Perspective",
+                                                    "Both"))
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r Ed and Affective Hope}
+#Create Chisquare table for Education and Affective Hope
+contingency_table2 <- table(data$Edu, data$AffHope)
+ggbarstats(
+  data  = data, 
+  x     = "CogHopAg", 
+  y     = "Edu", 
+  label = "both",
+  results.subtitle=F
+  ) + scale_fill_manual(values=c("blue", "pink"))
+#Create ChiSquare table
+fisher.test(contingency_table2)
+
+
+
+```
+
+
